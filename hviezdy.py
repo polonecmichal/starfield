@@ -1,0 +1,53 @@
+
+
+import py5
+
+
+class Star:
+    def __init__(self):
+        self.x = py5.random(-py5.width, py5.width)
+        self.y = py5.random(-py5.height, py5.height)
+        self.z = py5.random(py5.width)
+        
+        self.pz = self.z
+        self.px = self.x
+        self.py = self.y
+
+    def update(self, speed):
+        self.z -= speed
+        if self.z < 1:
+            self.x = py5.random(-py5.width, py5.width)
+            self.y = py5.random(-py5.height, py5.height)
+            self.z = py5.random(py5.width)
+    
+    def show(self):
+        py5.fill(255)
+        py5.no_stroke()
+        sx = py5.remap(self.x / self.z, 0, 1, 0, py5.width)
+        sy = py5.remap(self.y / self.z, 0, 1, 0, py5.height)
+        r = py5.remap(self.z, 0, py5.width, 16, 0)
+        py5.ellipse(sx, sy, r, r)
+
+        self.px = py5.remap(self.x / self.pz, 0, 1, 0, py5.width)
+        self.py = py5.remap(self.y / self.pz, 0, 1, 0, py5.height)
+
+        py5.stroke(255)
+        py5.line(self.px, self.py, sx, sy)
+
+# Initializuj hviezdy
+stars = [Star() for _ in range(1000)]
+
+def setup():
+    py5.size(800, 800)
+    for i in range(len(stars)):
+        stars[i] = Star()
+
+def draw():
+    py5.background(0)
+    speed = py5.remap(py5.mouse_x, 0, py5.width, 0 , 20)
+    py5.translate(py5.width/2, py5.height/2)
+    for i in range(len(stars)):
+        stars[i].update(speed)
+        stars[i].show()
+
+py5.run_sketch()    
