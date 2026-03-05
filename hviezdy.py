@@ -1,5 +1,3 @@
-
-
 import py5
 
 
@@ -14,11 +12,13 @@ class Star:
         self.py = self.y
 
     def update(self, speed):
+        self.pz = self.z
         self.z -= speed
         if self.z < 1:
             self.x = py5.random(-py5.width, py5.width)
             self.y = py5.random(-py5.height, py5.height)
             self.z = py5.random(py5.width)
+            self.pz = self.z
     
     def show(self):
         py5.fill(255)
@@ -38,7 +38,7 @@ class Star:
 stars = [Star() for _ in range(1000)]
 
 def setup():
-    py5.size(800, 800)
+    py5.size(1000, 1000)
     for i in range(len(stars)):
         stars[i] = Star()
 
